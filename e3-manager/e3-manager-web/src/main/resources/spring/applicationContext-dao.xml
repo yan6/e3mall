@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.1.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.1.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.1.xsd">
+	<!-- 引入数据库的配置文件 (4大参数) -->
+	<context:property-placeholder location="classpath:conf/db.properties" />
+	<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource"
+		destroy-method="close">
+		<property name="driverClassName" value="${jdbc.driver}"></property>
+		<property name="url" value="${jdbc.url}"></property>
+		<property name="username" value="${jdbc.username}"></property>
+		<property name="password" value="${jdbc.password}"></property>
+		<property name="maxActive" value="10"></property>
+		<property name="maxIdle" value="5"></property>
+	</bean>
+
+	<!-- 配置会话工厂 -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<!-- 指定mybatis核心配置文件 -->
+		<property name="configLocation" value="classpath:mybatis/SqlMapConfig.xml"></property>
+		<!-- 把数据库连接池注入会话工厂 -->
+		<property name="dataSource" ref="dataSource"></property>
+	</bean>
+
+	<!-- 动态代理方式实现(mapper) -->
+	<!-- 配置 UserMapper类 <bean id="userMapper" class="org.mybatis.spring.mapper.MapperFactoryBean"> 
+		<property name="mapperInterface" value="com.ywj.mapper.UserMapper"></property> 
+		<property name="sqlSessionFactory" ref="sqlSessionFactory"></property> </bean> -->
+
+	<!-- 使用包扫描的方式加载动态代理下的配置文件 扫描后引用，可以把id当成类名（首字母小写） -->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<!-- 指定扫描包，多个包用逗号分开 -->
+		<property name="basePackage" value="cn.e3mall.mapper"></property>
+		<!-- 待定 -->
+		<!--  <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />-->
+	</bean>
+
+
+
+</beans>

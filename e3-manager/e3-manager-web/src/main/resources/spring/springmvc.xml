@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.1.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.1.xsd">
+	<!-- 配置注解扫描 -->
+	<context:component-scan base-package="cn.e3mall.controller" />
+	<!-- 配置springMVC中3个组件处理器映射器,处理器适配器  ,视图解析器-->
+	<!-- 注解驱动,配置最新版处理器映射器，和最新版的处理器适配器 -->
+	<!-- <mvc:annotation-driven conversion-service="conversionService"/> -->
+	<mvc:annotation-driven />
+	<!-- 视图解析器 (默认使用jsp视图解析器)-->
+	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<!-- 真正的页面名称等于 :前缀+去掉后缀的页面名称+后缀-->
+		<!-- 前缀 -->
+		<property name="prefix" value="/jsp/"></property>
+		<!-- 后缀 -->
+		<property name="suffix" value=".jsp"></property>
+	</bean>
+	
+	
+	
+
+	
+</beans>
